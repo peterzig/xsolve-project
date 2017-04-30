@@ -9,16 +9,14 @@ import 'react-datepicker/dist/react-datepicker.css';
 let dateChosen = moment();
 
 const compareDates = (date1, date2) => {
-  console.log("Date1:", date1)
-  date2 = `${date2.getDay()}.${date2.getMonth()}.${date2.getFullYear()}`
-  console.log("Date2:", date2)
+  date2 = `${('0' + date2.getDate()).slice(-2)}.${('0' + (date2.getMonth()+1)).slice(-2)}.${date2.getFullYear()} 00:00`
+  console.log("GFDate1:", getFullDate(date1))
+  console.log("GFDate2:", getFullDate(date2))
   return getFullDate(date1).isBefore(getFullDate(date2))
 }
 
 const getFullDate = (date) => {
-  //console.log(moment(date, "DD.MM.YYYY"));
-  //return date.getYear()+ date.getMonth() + date.getDay();
-  return moment(date, "dd.mm.yyyy");
+  return moment(date, "DD.MM.YYYY");
 }
 
 class Table extends Component {
@@ -36,10 +34,6 @@ class Table extends Component {
       this.renderPagination = this.renderPagination.bind(this);
       this.loadSelectedData = this.loadSelectedData.bind(this);
       this.changePage = this.changePage.bind(this);
-  }
-
-  componentWillUpdate() {
-    //this.setState({numberOfPages: Math.ceil(this.state.data.length/5)})
   }
 
   renderPagination() {
@@ -64,7 +58,6 @@ class Table extends Component {
   }
 
   displayData() {
-    //console.log(this.state.data)
     return this.state.data.slice((this.state.currentPage)*5,(this.state.currentPage+1)*5).map((item, index) => (
       <div className="row" key={index}>
         <div className="col-sm-1">{item.id}</div>
@@ -93,12 +86,10 @@ class Table extends Component {
   }
 
   findItemByDate(item) {
-  console.log("abc", compareDates(item.dateOfBirth, dateChosen._d))
    return compareDates(item.dateOfBirth, dateChosen._d)
   }
 
   filterData() {
-    console.log(this.state.json.filter(this.findItem))
     return this.setState({data: this.state.json.filter(this.findItem)});
   }
 
